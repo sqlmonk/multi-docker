@@ -1,0 +1,16 @@
+language: generic
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t sqlmonk/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true sqlmonk/react-test npm test
+
+after_success:
+    - docker build -t sqlmonk/multi-client ./client
+    - docker build -t sqlmonk/multi-nginx ./nginx
+    - docker build -t sqlmonk/multi-server ./server
+    - docker build -t sqlmonk/multi-worker ./worker
