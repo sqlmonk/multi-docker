@@ -14,3 +14,12 @@ after_success:
     - docker build -t sqlmonk/multi-nginx ./nginx
     - docker build -t sqlmonk/multi-server ./server
     - docker build -t sqlmonk/multi-worker ./worker
+
+    # Login to docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # Take those images and push them to docker hub
+    - docker push sqlmonk/multi-client
+    - docker push sqlmonk/multi-nginx
+    - docker push sqlmonk/multi-server
+    - docker push sqlmonk/multi-worker
